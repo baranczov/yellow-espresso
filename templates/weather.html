@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Погода на маршруте</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .col {
+            flex: 1;
+            margin: 0 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .alert {
+            color: #d9534f;
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Погода на маршруте</h1>
+        <div class="row">
+            <div class="col">
+                <h2>{{ start }}</h2>
+                {% if errors_from %}
+                    <div class="alert">
+                        {{ errors_from }}
+                    </div>
+                {% endif %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Погодные условия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in weather_from.items() %}
+                        <tr>
+                            <td>{{ key }}: {{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col">
+                <h2>{{ end }}</h2>
+                {% if errors_to %}
+                    <div class="alert">
+                        {{ errors_to }}
+                    </div>
+                {% endif %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Погодные условия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in weather_to.items() %}
+                        <tr>
+                            <td>{{ key }}: {{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center">
+            {% if good_from and good_to %}
+                <p>Везде отличая погода!</p>
+            {% elif good_from and not good_to %}
+                <p>Отличная погода в городе {{ start }}, а вот погода в городе {{ end }} оставляет желать лучшего.</p>
+            {% elif not good_from and good_to %}
+                <p>Отличная погода в городе {{ end }}, а вот погода в городе {{ start }} оставляет желать лучшего.</p>
+            {% else %}
+                <p>Погодка так себе. Лучше останьтесь дома и рубаните каточку в танки)</p>
+            {% endif %}
+        </div>
+
+        <div class="text-center">
+            <a href="/" class="btn">Вернуться</a>
+        </div>
+    </div>
+</body>
+</html>
